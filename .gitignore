@@ -1,0 +1,31 @@
+# Java files
+*.class
+#*.jar
+*.war
+*.ear
+*.log
+
+# Maven/Gradle files
+target/
+build/
+
+# Eclipse files
+.classpath
+.project
+.settings/
+bin/
+*.launch
+
+# mac files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Application data files (remove if you WANT this tracked)
+expenses.dat
+

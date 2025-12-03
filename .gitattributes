@@ -1,0 +1,21 @@
+# Always use LF line endings
+*.java text eol=lf
+*.xml  text eol=lf
+*.md   text eol=lf
+*.txt  text eol=lf
+
+# No diffing on binary files
+*.jar binary
+*.dat binary
+*.png binary
+*.jpg binary
+*.gif binary
+*.pdf binary
+
+# Eclipse/Build
+*.class binary
+
+# Ignore JARs & libs in laguage % calculation
+lib/** linguist-vendored
+*.jar linguist-vendored
+
