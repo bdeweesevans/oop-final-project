@@ -1,7 +1,5 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
-
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
@@ -12,8 +10,7 @@ public class MainGUI extends JFrame {
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
 
-    private JTable tblExpensesTable;
-    private DefaultTableModel expensesModel;
+    private ExpensesTablePanel expensesTable;
     private PieChartPanel pieChart;
     private TimeSeriesChartPanel timeChart; 
 
@@ -29,29 +26,9 @@ public class MainGUI extends JFrame {
         
         //==================================================
 
-        String[] columnNames = { "Name", "Price", "Type", "Description", "Store", "Date" };
-
-        expensesModel = new DefaultTableModel(columnNames, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;   // disable cell editing
-            }
-        };
-        
-        tblExpensesTable = new JTable(expensesModel);
-        tblExpensesTable.setAutoCreateRowSorter(true);
-
-        // column widths
-        tblExpensesTable.getColumnModel().getColumn(0).setPreferredWidth(160);	// name
-        tblExpensesTable.getColumnModel().getColumn(1).setPreferredWidth(60);	// price
-        tblExpensesTable.getColumnModel().getColumn(2).setPreferredWidth(100);	// type
-        tblExpensesTable.getColumnModel().getColumn(3).setPreferredWidth(200);	// desc
-        tblExpensesTable.getColumnModel().getColumn(4).setPreferredWidth(120);	// store
-        tblExpensesTable.getColumnModel().getColumn(5).setPreferredWidth(110);	// date
-
-        JScrollPane spExpensesTable = new JScrollPane(tblExpensesTable);
-        spExpensesTable.setBounds(6, 6, 600, 519);
-        contentPane.add(spExpensesTable);
+        expensesTable = new ExpensesTablePanel();
+        expensesTable.setBounds(6, 6, 600, 519);
+        contentPane.add(expensesTable);
         
         //==================================================
         
@@ -94,45 +71,38 @@ public class MainGUI extends JFrame {
         btnDeleteExpense.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                int[] selectedRows = tblExpensesTable.getSelectedRows();
-                if (selectedRows.length == 0) {
-                    JOptionPane.showMessageDialog(
-                        MainGUI.this,
+                ArrayList<Integer> modelRows = expensesTable.getSelectedModelRows();
+                
+                // ensure row[s] selected
+                if (modelRows.isEmpty()) {
+                    JOptionPane.showMessageDialog(MainGUI.this,
                         "No rows selected.",
                         "Error",
-                        JOptionPane.ERROR_MESSAGE
-                    );
+                        JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
-                int confirm = JOptionPane.showConfirmDialog(
-                    MainGUI.this,
-                    "Are you sure you want to delete the selected expense(s)?",
-                    "Confirm Deletion",
-                    JOptionPane.YES_NO_OPTION
-                );
+                // confirm deletion
+                int choice = JOptionPane.showConfirmDialog(
+                        MainGUI.this,
+                        "Delete selected expense(s)?",
+                        "Confirm Deletion",
+                        JOptionPane.YES_NO_OPTION);
 
-                if (confirm != JOptionPane.YES_OPTION) {
+                if (choice != JOptionPane.YES_OPTION) {
                     return;
                 }
-
-                FileManager fm = new FileManager("expenses.dat");
-                ArrayList<Expense> list = fm.read();
                 
-                ArrayList<Integer> modelIndices = new ArrayList<>();
-                for (int row : selectedRows) {
-                    int modelRow = tblExpensesTable.convertRowIndexToModel(row);
-                    modelIndices.add(modelRow);
-                }
-
-                modelIndices.sort((a, b) -> b - a);	// sort list from biggest to smallest
-                for (int index : modelIndices) {	// remove items
-                    if (index >= 0 && index < list.size()) {
-                        list.remove(index);
+                // delete from arraylist + save + refresh
+                FileManager fm = new FileManager("expenses.dat");
+                ArrayList<Expense> expenses = fm.read();
+                modelRows.sort((a, b) -> b - a);
+                for (int row : modelRows) {
+                    if (row >= 0 && row < expenses.size()) {
+                        expenses.remove(row);
                     }
-                }
-
-                fm.write(list);
+                }            
+                fm.write(expenses);
                 refreshContent();
             }
         });
@@ -159,21 +129,8 @@ public class MainGUI extends JFrame {
     public void refreshContent() {
         FileManager fm = new FileManager("expenses.dat");
         ArrayList<Expense> expenses = fm.read();
-
-        expensesModel.setRowCount(0); // clear
-
-        for (Expense e : expenses) {
-            expensesModel.addRow(new Object[]{
-                e.getName(),
-                e.getPrice(),
-                e.getType(),
-                e.getDescription(),
-                e.getStoreName(),
-                e.getDate().toString()
-            });
-        }
-        expensesModel.fireTableDataChanged();
         
+        expensesTable.updateData(expenses);
         pieChart.updateData(expenses);
         timeChart.updateData(expenses);
     }
