@@ -1,8 +1,7 @@
-import javax.swing.*;
-
 import java.awt.Color;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import javax.swing.*;
 
 public class AddExpenseDialog extends JDialog {
 
@@ -10,7 +9,7 @@ public class AddExpenseDialog extends JDialog {
 
     private JTextField txtName;
     private JTextField txtPrice;
-    private JComboBox<ExpenseType> cmbType;
+    private JComboBox<String> cmbType;
     private JTextField txtDescription;
     private JTextField txtStore;
 
@@ -18,7 +17,8 @@ public class AddExpenseDialog extends JDialog {
 
     public AddExpenseDialog(JFrame parent) {
         super(parent, "Add New Expense", true);  // modal dialog
-        setSize(400, 350);
+        setSize(355, 335);
+        setResizable(false);
         setLocationRelativeTo(parent);
         setLayout(null);
 
@@ -42,7 +42,13 @@ public class AddExpenseDialog extends JDialog {
         lblType.setBounds(20, 100, 100, 25);
         add(lblType);
 
-        cmbType = new JComboBox<>(ExpenseType.values());
+        DefaultComboBoxModel<String> typeModel = new DefaultComboBoxModel<>();
+
+        for (ExpenseType t : ExpenseType.values()) {
+            typeModel.addElement(formatEnumLabel(t));
+        }
+        cmbType = new JComboBox<>(typeModel);
+
         cmbType.setBounds(140, 100, 200, 25);
         add(cmbType);
 
@@ -62,37 +68,41 @@ public class AddExpenseDialog extends JDialog {
         txtStore.setBounds(140, 180, 200, 25);
         add(txtStore);
 
+        JCheckBox chkKeepCreating = new JCheckBox("Keep creating");
+        chkKeepCreating.setBounds(120, 260, 150, 25); 
+        add(chkKeepCreating);
+
         JButton btnCancel = new JButton("Cancel");
         btnCancel.setBackground(new Color(255, 200, 200));
-        btnCancel.setBounds(20, 250, 100, 30);
+        btnCancel.setBounds(70, 225, 100, 30); 
         btnCancel.addActionListener(e -> dispose());
         add(btnCancel);
 
         JButton btnCreate = new JButton("Create");
         btnCreate.setBackground(new Color(185, 255, 185));
-        btnCreate.setBounds(140, 250, 100, 30);
+        btnCreate.setBounds(180, 225, 100, 30);
         btnCreate.addActionListener(e -> {
             if (createExpense()) {
-                dispose();
+                if (chkKeepCreating.isSelected()) {
+                    clearForm(); 
+                } else {
+                    dispose();
+                }
             }
         });
         add(btnCreate);
+    }
 
-        JButton btnCreateAnother = new JButton("Create + 1");
-        btnCreateAnother.setBackground(new Color(185, 255, 185));
-        btnCreateAnother.setBounds(260, 250, 100, 30);
-        btnCreateAnother.addActionListener(e -> {
-            if (createExpense()) {
-                clearForm();
-            }
-        });
-        add(btnCreateAnother);
+    private String formatEnumLabel(ExpenseType type) {
+        String raw = type.toString(); // e.g. "TRANSPORT"
+        return raw.substring(0,1).toUpperCase() + raw.substring(1).toLowerCase();
     }
 
     private boolean createExpense() {
         try {
             float price = Float.parseFloat(txtPrice.getText());
-            ExpenseType type = (ExpenseType) cmbType.getSelectedItem();  // ENUM VALUE
+            String typeLabel = (String) cmbType.getSelectedItem();
+            ExpenseType type = ExpenseType.valueOf(typeLabel.toUpperCase());
             String name = txtName.getText();
             String desc = txtDescription.getText();
             String store = txtStore.getText();

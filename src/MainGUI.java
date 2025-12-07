@@ -1,9 +1,11 @@
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.awt.event.ActionEvent;
-import java.awt.Color;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 
 public class MainGUI extends JFrame {
 
@@ -19,27 +21,48 @@ public class MainGUI extends JFrame {
         
     	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 900, 600);
+        setResizable(false);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         contentPane.setLayout(null);
+
+        // ================================================
+
+        JLabel tableHeader = new JLabel("Expenses Table:");
+        tableHeader.setBounds(6, 2, 300, 20); 
+        tableHeader.setFont(new Font("SansSerif", Font.BOLD, 18));
+        contentPane.add(tableHeader);
+
+        // ================================================
+
+        JLabel chartsHeader = new JLabel("Expenses Charts:");
+        chartsHeader.setBounds(618, 2, 300, 20); 
+        chartsHeader.setFont(new Font("SansSerif", Font.BOLD, 18));
+        contentPane.add(chartsHeader);
         
         //==================================================
 
         expensesTable = new ExpensesTablePanel();
-        expensesTable.setBounds(6, 6, 600, 519);
+        expensesTable.setBounds(6, 22, 600, 515);
         contentPane.add(expensesTable);
+
+        //==================================================
+
+        JSeparator verticalLine = new JSeparator(SwingConstants.VERTICAL);
+        verticalLine.setBounds(610, 6, 2, 550);
+        contentPane.add(verticalLine);
         
         //==================================================
         
         pieChart = new PieChartPanel();
-        pieChart.setBounds(618, 13, 275, 250);
+        pieChart.setBounds(618, 24, 275, 250);
         contentPane.add(pieChart);
         
         //==================================================
         
         timeChart = new TimeSeriesChartPanel();
-        timeChart.setBounds(618, 264, 275, 250);
+        timeChart.setBounds(618, 271, 275, 250);
         contentPane.add(timeChart);
         
         //==================================================
@@ -53,7 +76,6 @@ public class MainGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 AddExpenseDialog dialog = new AddExpenseDialog(MainGUI.this);
                 dialog.setVisible(true);
-
                 if (dialog.wasCreated()) {
                     refreshContent();
                 }
