@@ -1,9 +1,9 @@
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
-public class ExpensesTablePanel extends JPanel {
+public class ExpenseTablePanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
 
@@ -14,7 +14,7 @@ public class ExpensesTablePanel extends JPanel {
         "Name", "Price", "Type", "Description", "Store", "Date"
     };
 
-    public ExpensesTablePanel() {
+    public ExpenseTablePanel() {
         setLayout(new BorderLayout());
 
         // Custom non-editable table model

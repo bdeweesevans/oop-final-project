@@ -3,7 +3,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.jfree.chart.*;
 import org.jfree.chart.swing.ChartPanel;
 import org.jfree.data.general.*;
@@ -38,7 +37,7 @@ public class PieChartPanel extends JPanel {
         Map<String, Float> totals = new HashMap<>();
 
         for (Expense e : expenses) {
-            totals.merge(e.getType().toString(), e.getPrice(), Float::sum);
+        	totals.merge(e.getType().toString(), e.getPrice(), Float::sum);
         }
 
         for (var entry : totals.entrySet()) {
