@@ -18,7 +18,6 @@ public class AddExpenseDialog extends JDialog {
     public AddExpenseDialog(JFrame parent) {
         super(parent, "Add New Expense", true);  // modal dialog
         setSize(355, 335);
-        setResizable(false);
         setLocationRelativeTo(parent);
         setLayout(null);
 
@@ -91,6 +90,8 @@ public class AddExpenseDialog extends JDialog {
             }
         });
         add(btnCreate);
+        
+        setResizable(false);
     }
 
     private String formatEnumLabel(ExpenseType type) {
