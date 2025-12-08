@@ -3,9 +3,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.jfree.chart.*;
-import org.jfree.chart.plot.pie.PiePlot;
 import org.jfree.chart.swing.ChartPanel;
 import org.jfree.data.general.*;
 
