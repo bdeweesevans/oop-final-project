@@ -1,5 +1,6 @@
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
+
 
 public class Expense implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -9,10 +10,10 @@ public class Expense implements Serializable {
     private String name;
     private String description;
     private String storeName;
-    private LocalDate date;
+    private Date date;
 
     public Expense(float price, ExpenseType type, String name, String description,
-                   String storeName, LocalDate date) {
+                   String storeName, Date date) {
         this.price = price;
         this.type = type;
         this.name = name;
@@ -36,6 +37,6 @@ public class Expense implements Serializable {
     public String getStoreName() { return storeName; }
     public void setStoreName(String storeName) { this.storeName = storeName; }
 
-    public LocalDate getDate() { return date; }
-    public void setDate(LocalDate date) { this.date = date; }
+    public Date getDate() { return date; }
+    public void setDate(Date date) { this.date = date; }
 }

@@ -1,9 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Date;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -52,19 +53,22 @@ public class TimeSeriesChartPanel extends JPanel {
         series.clear();
 
         // aggregate by date
-        Map<LocalDate, Float> totals = new TreeMap<>();
+        Map<Date, Float> totals = new TreeMap<>();
 
         for (Expense e : expenses) {
             totals.merge(e.getDate(), e.getPrice(), Float::sum);
         }
 
         // Add dates to the series
-        for (Map.Entry<LocalDate, Float> entry : totals.entrySet()) {
-            LocalDate date = entry.getKey();
+        for (Map.Entry<Date, Float> entry : totals.entrySet()) {
+            Date date = entry.getKey();
             float amount = entry.getValue();
-
+            
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            
             series.add(
-                new Day(date.getDayOfMonth(), date.getMonthValue(), date.getYear()),
+                new Day(cal.get(Calendar.DATE), cal.get(Calendar.MONTH), cal.get(Calendar.YEAR)),
                 amount
             );
         }
