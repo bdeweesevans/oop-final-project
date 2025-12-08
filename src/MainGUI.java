@@ -11,7 +11,6 @@ public class MainGUI extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
-
     private ExpensesTablePanel expensesTable;
     private PieChartPanel pieChart;
     private TimeSeriesChartPanel timeChart; 
