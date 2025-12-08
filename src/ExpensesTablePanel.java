@@ -39,11 +39,6 @@ public class ExpensesTablePanel extends JPanel {
         add(new JScrollPane(table), BorderLayout.CENTER);
     }
 
-    private String formatEnumLabel(ExpenseType type) {
-        String raw = type.toString(); // e.g., "TRANSPORT"
-        return raw.substring(0,1).toUpperCase() + raw.substring(1).toLowerCase();
-    }
-
     /** Replace the table contents with updated expense data */
     public void updateData(ArrayList<Expense> expenses) {
         model.setRowCount(0);
@@ -52,7 +47,7 @@ public class ExpensesTablePanel extends JPanel {
             model.addRow(new Object[] {
                 e.getName(),
                 e.getPrice(),
-                formatEnumLabel(e.getType()),
+                e.getType(),
                 e.getDescription(),
                 e.getStoreName(),
                 e.getDate().toString()

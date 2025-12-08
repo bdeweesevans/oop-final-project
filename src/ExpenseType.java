@@ -5,5 +5,11 @@ public enum ExpenseType {
     TRANSPORT,
     FOOD,
     FUN,
-    MISC
+    MISC;
+    
+    @Override
+    public String toString() {
+        String raw = name();
+        return raw.charAt(0) + raw.substring(1).toLowerCase();
+    }
 }

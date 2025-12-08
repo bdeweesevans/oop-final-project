@@ -9,7 +9,7 @@ public class AddExpenseDialog extends JDialog {
 
     private JTextField txtName;
     private JTextField txtPrice;
-    private JComboBox<String> cmbType;
+    private JComboBox<ExpenseType> cmbType;
     private JTextField txtDescription;
     private JTextField txtStore;
 
@@ -41,12 +41,7 @@ public class AddExpenseDialog extends JDialog {
         lblType.setBounds(20, 100, 100, 25);
         add(lblType);
 
-        DefaultComboBoxModel<String> typeModel = new DefaultComboBoxModel<>();
-
-        for (ExpenseType t : ExpenseType.values()) {
-            typeModel.addElement(formatEnumLabel(t));
-        }
-        cmbType = new JComboBox<>(typeModel);
+        cmbType = new JComboBox<>(ExpenseType.values());
 
         cmbType.setBounds(140, 100, 200, 25);
         add(cmbType);
@@ -92,11 +87,6 @@ public class AddExpenseDialog extends JDialog {
         add(btnCreate);
         
         setResizable(false);
-    }
-
-    private String formatEnumLabel(ExpenseType type) {
-        String raw = type.toString(); // e.g. "TRANSPORT"
-        return raw.substring(0,1).toUpperCase() + raw.substring(1).toLowerCase();
     }
 
     private boolean createExpense() {
