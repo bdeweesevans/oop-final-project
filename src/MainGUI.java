@@ -8,7 +8,6 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-
 public class MainGUI extends JFrame {
 
     private static final long serialVersionUID = 1L;
@@ -50,27 +49,21 @@ public class MainGUI extends JFrame {
         expensesTable = new ExpenseTablePanel();
         expensesTable.setBounds(6, 22, 600, 515);
         contentPane.add(expensesTable);
-
-        //==================================================
-
-        JSeparator verticalLine = new JSeparator(SwingConstants.VERTICAL);
-        verticalLine.setBounds(610, 6, 2, 550);
-        contentPane.add(verticalLine);
         
         //==================================================
         
-        pieChart = new PieChartPanel();
-        pieChart.setBounds(618, 24, 275, 250);
-        contentPane.add(pieChart);
-        
-        //==================================================
-        
-        timeChart = new TimeSeriesChartPanel();
-        timeChart.setBounds(618, 287, 275, 250);
-        contentPane.add(timeChart);
+        JButton btnExit = new JButton("Exit");
+        btnExit.setBackground(new Color(180, 205, 255));
+        btnExit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        btnExit.setBounds(6, 537, 94, 29);
+        contentPane.add(btnExit);
 
         //==================================================
-
+        
         JButton btnAddExpense = new JButton("Add");
         btnAddExpense.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -112,18 +105,24 @@ public class MainGUI extends JFrame {
             }
         });
         contentPane.add(btnDeleteExpense);
+
+        //==================================================
+
+        JSeparator verticalLine = new JSeparator(SwingConstants.VERTICAL);
+        verticalLine.setBounds(610, 6, 2, 550);
+        contentPane.add(verticalLine);
         
         //==================================================
         
-        JButton btnExit = new JButton("Exit");
-        btnExit.setBackground(new Color(180, 205, 255));
-        btnExit.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
-        btnExit.setBounds(6, 537, 94, 29);
-        contentPane.add(btnExit);
+        pieChart = new PieChartPanel();
+        pieChart.setBounds(618, 24, 275, 250);
+        contentPane.add(pieChart);
+        
+        //==================================================
+        
+        timeChart = new TimeSeriesChartPanel();
+        timeChart.setBounds(618, 287, 275, 250);
+        contentPane.add(timeChart);
 
         //==================================================
         

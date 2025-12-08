@@ -7,6 +7,7 @@ import java.util.TreeMap;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.swing.ChartPanel;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
@@ -37,11 +38,11 @@ public class TimeSeriesChartPanel extends JPanel {
             false
         );
 
-//        // visual configs (optional)
-//        XYPlot plot = (XYPlot) chart.getPlot();
-//        plot.setBackgroundPaint(Color.WHITE);
-//        plot.setDomainGridlinePaint(Color.GRAY);
-//        plot.setRangeGridlinePaint(Color.GRAY);
+        // visual configs (optional)
+        XYPlot plot = (XYPlot) chart.getPlot();
+        plot.setBackgroundPaint(Color.WHITE);
+        plot.setDomainGridlinePaint(Color.GRAY);
+        plot.setRangeGridlinePaint(Color.GRAY);
 
         chartPanel = new ChartPanel(chart);
         add(chartPanel, BorderLayout.CENTER);
