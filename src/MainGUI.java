@@ -3,24 +3,28 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
 
 public class MainGUI extends JFrame {
 
     private static final long serialVersionUID = 1L;
+    private ExpenseManager expenseManager;
     private JPanel contentPane;
     private JTextField txtSearch;
     private JButton btnSearch;
     private JButton btnClear;
 
+    private ExpenseTablePanel expensesTable;
 
-    private ExpensesTablePanel expensesTable;
     private PieChartPanel pieChart;
-    private TimeSeriesChartPanel timeChart; 
+    private TimeSeriesChartPanel timeChart;
 
     public MainGUI() {
+    	expenseManager = new ExpenseManager("expenses.dat");
+
         //==================================================
         
     	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -33,14 +37,14 @@ public class MainGUI extends JFrame {
 
         // ================================================
 
-        JLabel tableHeader = new JLabel("Expenses Table:");
-        tableHeader.setBounds(6, 2, 300, 20); 
+        JLabel tableHeader = new JLabel("Expense Table:");
+        tableHeader.setBounds(6, 2, 140, 20); 
         tableHeader.setFont(new Font("SansSerif", Font.BOLD, 18));
         contentPane.add(tableHeader);
 
         // ================================================
 
-        JLabel chartsHeader = new JLabel("Expenses Charts:");
+        JLabel chartsHeader = new JLabel("Expense Charts:");
         chartsHeader.setBounds(618, 2, 300, 20); 
         chartsHeader.setFont(new Font("SansSerif", Font.BOLD, 18));
         contentPane.add(chartsHeader);
@@ -72,9 +76,66 @@ public class MainGUI extends JFrame {
 
         //==================================================
 
-        expensesTable = new ExpensesTablePanel();
+        expensesTable = new ExpenseTablePanel();
+
         expensesTable.setBounds(6, 22, 600, 515);
         contentPane.add(expensesTable);
+        
+        //==================================================
+        
+        JButton btnExit = new JButton("Exit");
+        btnExit.setBackground(new Color(180, 205, 255));
+        btnExit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        btnExit.setBounds(6, 537, 94, 29);
+        contentPane.add(btnExit);
+
+        //==================================================
+        
+        JButton btnAddExpense = new JButton("Add");
+        btnAddExpense.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                AddExpenseDialog dialog = new AddExpenseDialog(MainGUI.this);
+                dialog.setVisible(true);
+                if (dialog.getCreatedExpense() != null) {
+                    expenseManager.addExpense(dialog.getCreatedExpense());
+                    refreshContent();
+                }
+            }
+        });
+        btnAddExpense.setBackground(new Color(185, 255, 185));
+        btnAddExpense.setBounds(446, 537, 75, 29);
+        contentPane.add(btnAddExpense);
+        
+        //==================================================
+        
+        JButton btnDeleteExpense = new JButton("Delete");
+        btnDeleteExpense.setBackground(new Color(255, 200, 200));
+        btnDeleteExpense.setBounds(522, 537, 84, 29);
+        btnDeleteExpense.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	List<Integer> rows = expensesTable.getSelectedModelRows();
+                if (rows.isEmpty()) {
+                    JOptionPane.showMessageDialog(MainGUI.this, "No rows selected.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                int choice = JOptionPane.showConfirmDialog(
+                    MainGUI.this,
+                    "Delete selected expense(s)?",
+                    "Confirm Deletion",
+                    JOptionPane.YES_NO_OPTION);
+
+                if (choice != JOptionPane.YES_OPTION) return;
+
+                expenseManager.deleteExpenses(rows);
+                refreshContent();
+            }
+        });
+        contentPane.add(btnDeleteExpense);
 
         //==================================================
 
@@ -91,86 +152,13 @@ public class MainGUI extends JFrame {
         //==================================================
         
         timeChart = new TimeSeriesChartPanel();
-        timeChart.setBounds(618, 271, 275, 250);
+        timeChart.setBounds(618, 287, 275, 250);
         contentPane.add(timeChart);
-        
+
         //==================================================
         
         refreshContent();
-
-        //==================================================
-
-        JButton btnAddExpense = new JButton("Add");
-        btnAddExpense.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                AddExpenseDialog dialog = new AddExpenseDialog(MainGUI.this);
-                dialog.setVisible(true);
-                if (dialog.wasCreated()) {
-                    refreshContent();
-                }
-            }
-        });
-        btnAddExpense.setBackground(new Color(185, 255, 185));
-        btnAddExpense.setBounds(446, 537, 75, 29);
-        contentPane.add(btnAddExpense);
         
-        //==================================================
-        
-        JButton btnDeleteExpense = new JButton("Delete");
-        btnDeleteExpense.setBackground(new Color(255, 200, 200));
-        btnDeleteExpense.setBounds(522, 537, 84, 29);
-        btnDeleteExpense.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-
-                ArrayList<Integer> modelRows = expensesTable.getSelectedModelRows();
-                
-                // ensure row[s] selected
-                if (modelRows.isEmpty()) {
-                    JOptionPane.showMessageDialog(MainGUI.this,
-                        "No rows selected.",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                // confirm deletion
-                int choice = JOptionPane.showConfirmDialog(
-                        MainGUI.this,
-                        "Delete selected expense(s)?",
-                        "Confirm Deletion",
-                        JOptionPane.YES_NO_OPTION);
-
-                if (choice != JOptionPane.YES_OPTION) {
-                    return;
-                }
-                
-                // delete from arraylist + save + refresh
-                FileManager fm = new FileManager("expenses.dat");
-                ArrayList<Expense> expenses = fm.read();
-                modelRows.sort((a, b) -> b - a);
-                for (int row : modelRows) {
-                    if (row >= 0 && row < expenses.size()) {
-                        expenses.remove(row);
-                    }
-                }            
-                fm.write(expenses);
-                refreshContent();
-            }
-        });
-        contentPane.add(btnDeleteExpense);
-        
-        //==================================================
-        
-        JButton btnExit = new JButton("Exit");
-        btnExit.setBackground(new Color(180, 205, 255));
-        btnExit.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
-        btnExit.setBounds(6, 537, 94, 29);
-        contentPane.add(btnExit);
-
         //==================================================
 
         setLocationRelativeTo(null);

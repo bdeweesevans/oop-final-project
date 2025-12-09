@@ -4,9 +4,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.swing.ChartPanel;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
@@ -37,11 +37,11 @@ public class TimeSeriesChartPanel extends JPanel {
             false
         );
 
-//        // visual configs (optional)
-//        XYPlot plot = (XYPlot) chart.getPlot();
-//        plot.setBackgroundPaint(Color.WHITE);
-//        plot.setDomainGridlinePaint(Color.GRAY);
-//        plot.setRangeGridlinePaint(Color.GRAY);
+        // visual configs (optional)
+        XYPlot plot = (XYPlot) chart.getPlot();
+        plot.setBackgroundPaint(Color.WHITE);
+        plot.setDomainGridlinePaint(Color.GRAY);
+        plot.setRangeGridlinePaint(Color.GRAY);
 
         chartPanel = new ChartPanel(chart);
         add(chartPanel, BorderLayout.CENTER);
@@ -49,14 +49,14 @@ public class TimeSeriesChartPanel extends JPanel {
 
     public void updateData(ArrayList<Expense> expenses) {
         series.clear();
-
+        
         // aggregate by date
         Map<LocalDate, Float> totals = new TreeMap<>();
 
         for (Expense e : expenses) {
             totals.merge(e.getDate(), e.getPrice(), Float::sum);
         }
-
+        
         // Add dates to the series
         for (Map.Entry<LocalDate, Float> entry : totals.entrySet()) {
             LocalDate date = entry.getKey();
@@ -68,4 +68,5 @@ public class TimeSeriesChartPanel extends JPanel {
             );
         }
     }
+
 }
