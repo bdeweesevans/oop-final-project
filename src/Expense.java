@@ -1,19 +1,18 @@
 import java.io.Serializable;
-import java.util.Date;
-
+import java.time.LocalDate;
 
 public class Expense implements Serializable {
     private static final long serialVersionUID = 1L;
-	
+
     private float price;
     private ExpenseType type;
     private String name;
     private String description;
     private String storeName;
-    private Date date;
+    private LocalDate date;
 
-    public Expense(float price, ExpenseType type, String name, String description,
-                   String storeName, Date date) {
+    public Expense(float price, ExpenseType type, String name,
+                   String description, String storeName, LocalDate date) {
         this.price = price;
         this.type = type;
         this.name = name;
@@ -37,6 +36,6 @@ public class Expense implements Serializable {
     public String getStoreName() { return storeName; }
     public void setStoreName(String storeName) { this.storeName = storeName; }
 
-    public Date getDate() { return date; }
-    public void setDate(Date date) { this.date = date; }
+    public LocalDate getDate() { return date; }
+    public void setDate(LocalDate date) { this.date = date; }
 }

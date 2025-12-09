@@ -1,9 +1,9 @@
 import java.awt.Color;
 import java.util.Date;
-
 import javax.swing.*;
-import com.toedter.calendar.JDayChooser;
 import com.toedter.calendar.JDateChooser;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 public class AddExpenseDialog extends JDialog {
 
@@ -45,7 +45,6 @@ public class AddExpenseDialog extends JDialog {
         lblType.setBounds(20, 100, 100, 25);
         getContentPane().add(lblType);
 
-        // No need for strings — enums display nicely because of your toString()
         cmbType = new JComboBox<>(ExpenseType.values());
         cmbType.setBounds(140, 100, 200, 25);
         getContentPane().add(cmbType);
@@ -108,7 +107,11 @@ public class AddExpenseDialog extends JDialog {
             String name = txtName.getText().trim();
             String desc = txtDescription.getText().trim();
             String store = txtStore.getText().trim();
-            Date date = dateChooser.getDate();
+
+            Date utilDate = dateChooser.getDate();
+            LocalDate date = utilDate.toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
 
             createdExpense = new Expense(price, type, name, desc, store, date);
 
