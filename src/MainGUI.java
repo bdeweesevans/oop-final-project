@@ -11,6 +11,10 @@ public class MainGUI extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
+    private JTextField txtSearch;
+    private JButton btnSearch;
+    private JButton btnClear;
+
 
     private ExpensesTablePanel expensesTable;
     private PieChartPanel pieChart;
@@ -41,6 +45,31 @@ public class MainGUI extends JFrame {
         chartsHeader.setFont(new Font("SansSerif", Font.BOLD, 18));
         contentPane.add(chartsHeader);
         
+        //==================================================
+
+        int rightX = 600;   
+        int baseY = 2;      
+
+        JLabel lblSearch = new JLabel("Search:");
+        lblSearch.setBounds(rightX - 270, baseY, 60, 20);
+        contentPane.add(lblSearch);
+
+        txtSearch = new JTextField();
+        txtSearch.setBounds(rightX - 225, baseY, 120, 22);
+        contentPane.add(txtSearch);
+
+        btnSearch = new JButton("Go");
+        btnSearch.setBounds(rightX - 100, baseY, 45, 22);
+        btnSearch.addActionListener(e -> performSearch());
+        contentPane.add(btnSearch);
+
+        // CLEAR BUTTON — resets search field and reloads table
+        btnClear = new JButton("Clear");
+        btnClear.setBounds(rightX - 55, baseY, 60, 22);
+        btnClear.addActionListener(e -> clearSearch());
+        contentPane.add(btnClear);
+
+
         //==================================================
 
         expensesTable = new ExpensesTablePanel();
@@ -156,4 +185,41 @@ public class MainGUI extends JFrame {
         pieChart.updateData(expenses);
         timeChart.updateData(expenses);
     }
+
+    private void performSearch() {
+        String query = txtSearch.getText().trim().toLowerCase();
+
+        FileManager fm = new FileManager("expenses.dat");
+        ArrayList<Expense> all = fm.read();
+
+        if (query.isEmpty()) {
+            // If no search term → show everything
+            expensesTable.updateData(all);
+            pieChart.updateData(all);
+            timeChart.updateData(all);
+            return;
+        }
+
+        ArrayList<Expense> filtered = new ArrayList<>();
+        for (Expense exp : all) {
+            String name = exp.getName().toLowerCase();
+            String desc = exp.getDescription().toLowerCase();  
+
+            if (name.contains(query) || desc.contains(query)) {
+                filtered.add(exp);
+            }
+        }
+
+        expensesTable.updateData(filtered);
+        pieChart.updateData(filtered);
+        timeChart.updateData(filtered);
+    }
+
+
+    private void clearSearch() {
+        txtSearch.setText("");
+        refreshContent();
+    }
+
+
 }
