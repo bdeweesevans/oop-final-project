@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.XYPlot;
@@ -50,14 +49,14 @@ public class TimeSeriesChartPanel extends JPanel {
 
     public void updateData(ArrayList<Expense> expenses) {
         series.clear();
-
+        
         // aggregate by date
         Map<LocalDate, Float> totals = new TreeMap<>();
 
         for (Expense e : expenses) {
             totals.merge(e.getDate(), e.getPrice(), Float::sum);
         }
-
+        
         // Add dates to the series
         for (Map.Entry<LocalDate, Float> entry : totals.entrySet()) {
             LocalDate date = entry.getKey();
@@ -69,4 +68,5 @@ public class TimeSeriesChartPanel extends JPanel {
             );
         }
     }
+
 }

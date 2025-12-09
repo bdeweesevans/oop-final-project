@@ -3,7 +3,7 @@ import java.time.LocalDate;
 
 public class Expense implements Serializable {
     private static final long serialVersionUID = 1L;
-	
+
     private float price;
     private ExpenseType type;
     private String name;
@@ -11,8 +11,8 @@ public class Expense implements Serializable {
     private String storeName;
     private LocalDate date;
 
-    public Expense(float price, ExpenseType type, String name, String description,
-                   String storeName, LocalDate date) {
+    public Expense(float price, ExpenseType type, String name,
+                   String description, String storeName, LocalDate date) {
         this.price = price;
         this.type = type;
         this.name = name;
