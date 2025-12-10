@@ -10,6 +10,8 @@ import java.util.TreeMap;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.XYPlot;
+//import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.renderer.xy.XYSplineRenderer;
 import org.jfree.chart.swing.ChartPanel;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
@@ -40,11 +42,16 @@ public class TimeSeriesChartPanel extends JPanel {
             false
         );
 
-        // visual configs (optional)
+        // visual configs
         XYPlot plot = (XYPlot) chart.getPlot();
         plot.setBackgroundPaint(Color.WHITE);
         plot.setDomainGridlinePaint(Color.GRAY);
         plot.setRangeGridlinePaint(Color.GRAY);
+        XYSplineRenderer renderer = new XYSplineRenderer();
+        renderer.setSeriesStroke(0, new BasicStroke(2.5f));
+        renderer.setSeriesShapesVisible(0, false);
+        renderer.setSeriesPaint(0, new Color(65, 105, 225));
+        plot.setRenderer(renderer);
 
         chartPanel = new ChartPanel(chart);
         add(chartPanel, BorderLayout.CENTER);
