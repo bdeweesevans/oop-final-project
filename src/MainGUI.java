@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -16,16 +15,18 @@ public class MainGUI extends JFrame {
     private JTextField txtSearch;
     private JButton btnSearch;
     private JButton btnClear;
-
     private ExpenseTablePanel expensesTable;
-
     private PieChartPanel pieChart;
     private TimeSeriesChartPanel timeChart;
 
     public MainGUI() {
+    	//==================================================
+    	// Expense manager creation
+    	
     	expenseManager = new ExpenseManager("expenses.dat");
 
         //==================================================
+    	// Base content pane configs
         
     	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 900, 600);
@@ -36,13 +37,12 @@ public class MainGUI extends JFrame {
         contentPane.setLayout(null);
 
         // ================================================
+        // Header labels
 
         JLabel tableHeader = new JLabel("Expense Table:");
         tableHeader.setBounds(6, 2, 140, 20); 
         tableHeader.setFont(new Font("SansSerif", Font.BOLD, 18));
         contentPane.add(tableHeader);
-
-        // ================================================
 
         JLabel chartsHeader = new JLabel("Expense Charts:");
         chartsHeader.setBounds(618, 2, 300, 20); 
@@ -50,6 +50,7 @@ public class MainGUI extends JFrame {
         contentPane.add(chartsHeader);
         
         //==================================================
+        // Search bar + search buttons
 
         int rightX = 600;   
         int baseY = 2;      
@@ -75,27 +76,15 @@ public class MainGUI extends JFrame {
         });
         contentPane.add(btnClear);
 
-
         //==================================================
+        // Expense table
 
         expensesTable = new ExpenseTablePanel();
-
         expensesTable.setBounds(6, 22, 600, 515);
         contentPane.add(expensesTable);
-        
-        //==================================================
-        
-        JButton btnExit = new JButton("Exit");
-        btnExit.setBackground(new Color(180, 205, 255));
-        btnExit.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
-        btnExit.setBounds(6, 537, 94, 29);
-        contentPane.add(btnExit);
 
         //==================================================
+        // Expense table buttons
         
         JButton btnAddExpense = new JButton("Add");
         btnAddExpense.addActionListener(new ActionListener() {
@@ -111,8 +100,6 @@ public class MainGUI extends JFrame {
         btnAddExpense.setBackground(new Color(185, 255, 185));
         btnAddExpense.setBounds(446, 537, 75, 29);
         contentPane.add(btnAddExpense);
-        
-        //==================================================
         
         JButton btnDeleteExpense = new JButton("Delete");
         btnDeleteExpense.setBackground(new Color(255, 200, 200));
@@ -140,22 +127,35 @@ public class MainGUI extends JFrame {
         contentPane.add(btnDeleteExpense);
 
         //==================================================
+        // Visual [table | charts] separator
 
         JSeparator verticalLine = new JSeparator(SwingConstants.VERTICAL);
         verticalLine.setBounds(610, 6, 2, 550);
         contentPane.add(verticalLine);
         
         //==================================================
+        // Charts
         
         pieChart = new PieChartPanel();
         pieChart.setBounds(618, 24, 275, 250);
         contentPane.add(pieChart);
         
-        //==================================================
-        
         timeChart = new TimeSeriesChartPanel();
         timeChart.setBounds(618, 287, 275, 250);
         contentPane.add(timeChart);
+        
+        //==================================================
+        // Exit button
+        
+        JButton btnExit = new JButton("Exit");
+        btnExit.setBackground(new Color(180, 205, 255));
+        btnExit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        btnExit.setBounds(6, 537, 94, 29);
+        contentPane.add(btnExit);
 
         //==================================================
         
