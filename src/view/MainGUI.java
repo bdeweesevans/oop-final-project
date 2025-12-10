@@ -1,3 +1,8 @@
+package view;
+
+import model.Expense;
+import util.ExpenseManager;
+import util.FileManager;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -23,7 +28,7 @@ public class MainGUI extends JFrame {
     	//==================================================
     	// Expense manager creation
     	
-    	expenseManager = new ExpenseManager("expenses.dat");
+    	expenseManager = new ExpenseManager();
 
         //==================================================
     	// Base content pane configs
@@ -168,7 +173,7 @@ public class MainGUI extends JFrame {
     
     // Updates the table and charts on the GUI.   
     public void refreshContent() {
-        FileManager fm = new FileManager("expenses.dat");
+        FileManager fm = new FileManager();
         ArrayList<Expense> expenses = fm.read();
         
         expensesTable.updateData(expenses);

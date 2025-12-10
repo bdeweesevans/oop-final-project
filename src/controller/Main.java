@@ -1,3 +1,6 @@
+package controller;
+
+import view.MainGUI;
 import javax.swing.UIManager;
 
 public class Main {

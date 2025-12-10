@@ -1,12 +1,15 @@
+package util;
+
+import model.Expense;
 import java.io.*;
 import java.util.ArrayList;
 
 public class FileManager {
 
     private final String filePath;
-
-    public FileManager(String filePath) {
-        this.filePath = filePath;
+    
+    public FileManager() {
+        this.filePath = "data/expenses.dat";
         checkFileIntegrity();
     }
 

@@ -1,3 +1,6 @@
+package util;
+
+import model.Expense;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -5,8 +8,8 @@ public class ExpenseManager {
 
     private final FileManager fileManager;
 
-    public ExpenseManager(String filePath) {
-        this.fileManager = new FileManager(filePath);
+    public ExpenseManager() {
+        this.fileManager = new FileManager();
     }
 
     public List<Expense> getAllExpenses() {
