@@ -105,19 +105,17 @@ public class AddExpenseDialog extends JDialog {
 
     private boolean tryCreateExpense() {
         try {
+            String name = txtName.getText().trim();
             float price = Float.parseFloat(txtPrice.getText());
             ExpenseType type = (ExpenseType) cmbType.getSelectedItem();
-
-            String name = txtName.getText().trim();
             String desc = txtDescription.getText().trim();
             String store = txtStore.getText().trim();
-
             Date utilDate = dateChooser.getDate();
             LocalDate date = utilDate.toInstant()
                     .atZone(ZoneId.systemDefault())
                     .toLocalDate();
 
-            createdExpense = new Expense(price, type, name, desc, store, date);
+            createdExpense = new Expense(name, price, type, desc, store, date);
 
             return true;
 

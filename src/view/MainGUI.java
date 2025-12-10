@@ -18,8 +18,6 @@ public class MainGUI extends JFrame {
     private ExpenseManager expenseManager;
     private JPanel contentPane;
     private JTextField txtSearch;
-    private JButton btnSearch;
-    private JButton btnClear;
     private ExpenseTablePanel expensesTable;
     private PieChartPanel pieChart;
     private TimeSeriesChartPanel timeChart;
@@ -67,13 +65,13 @@ public class MainGUI extends JFrame {
         txtSearch = new JTextField();
         txtSearch.setBounds(rightX - 225, baseY, 120, 22);
         contentPane.add(txtSearch);
-
-        btnSearch = new JButton("Go");
+        
+        JButton btnSearch = new JButton("Go");
         btnSearch.setBounds(rightX - 100, baseY, 45, 22);
-        btnSearch.addActionListener(e -> performSearch());
+        btnSearch.addActionListener(e -> performSearch(txtSearch.getText()));
         contentPane.add(btnSearch);
 
-        btnClear = new JButton("Clear");
+        JButton btnClear = new JButton("Clear");
         btnClear.setBounds(rightX - 55, baseY, 60, 22);
         btnClear.addActionListener(e -> {
         	txtSearch.setText("");
@@ -181,8 +179,7 @@ public class MainGUI extends JFrame {
         timeChart.updateData(expenses);
     }
     
-    private void performSearch() {
-        String query = txtSearch.getText();
+    private void performSearch(String query) {
         ArrayList<Expense> filtered = expenseManager.searchExpenses(query);
         
         expensesTable.updateData(filtered);
