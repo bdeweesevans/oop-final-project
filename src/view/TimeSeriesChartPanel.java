@@ -1,3 +1,6 @@
+package view;
+
+import model.Expense;
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;

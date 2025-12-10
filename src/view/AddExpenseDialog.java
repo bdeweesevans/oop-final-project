@@ -1,3 +1,7 @@
+package view;
+
+import model.Expense;
+import model.ExpenseType;
 import java.awt.Color;
 import java.util.Date;
 import javax.swing.*;
