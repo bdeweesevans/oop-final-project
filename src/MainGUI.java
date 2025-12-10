@@ -67,10 +67,12 @@ public class MainGUI extends JFrame {
         btnSearch.addActionListener(e -> performSearch());
         contentPane.add(btnSearch);
 
-        // CLEAR BUTTON — resets search field and reloads table
         btnClear = new JButton("Clear");
         btnClear.setBounds(rightX - 55, baseY, 60, 22);
-        btnClear.addActionListener(e -> clearSearch());
+        btnClear.addActionListener(e -> {
+        	txtSearch.setText("");
+        	refreshContent();
+        });
         contentPane.add(btnClear);
 
 
@@ -173,41 +175,14 @@ public class MainGUI extends JFrame {
         pieChart.updateData(expenses);
         timeChart.updateData(expenses);
     }
-
+    
     private void performSearch() {
-        String query = txtSearch.getText().trim().toLowerCase();
-
-        FileManager fm = new FileManager("expenses.dat");
-        ArrayList<Expense> all = fm.read();
-
-        if (query.isEmpty()) {
-            // If no search term → show everything
-            expensesTable.updateData(all);
-            pieChart.updateData(all);
-            timeChart.updateData(all);
-            return;
-        }
-
-        ArrayList<Expense> filtered = new ArrayList<>();
-        for (Expense exp : all) {
-            String name = exp.getName().toLowerCase();
-            String desc = exp.getDescription().toLowerCase();  
-
-            if (name.contains(query) || desc.contains(query)) {
-                filtered.add(exp);
-            }
-        }
-
+        String query = txtSearch.getText();
+        ArrayList<Expense> filtered = expenseManager.searchExpenses(query);
+        
         expensesTable.updateData(filtered);
         pieChart.updateData(filtered);
         timeChart.updateData(filtered);
     }
-
-
-    private void clearSearch() {
-        txtSearch.setText("");
-        refreshContent();
-    }
-
 
 }

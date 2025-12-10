@@ -32,4 +32,26 @@ public class ExpenseManager {
 
         fileManager.write(list);
     }
+    
+    public ArrayList<Expense> searchExpenses(String query) {
+        ArrayList<Expense> all = fileManager.read();
+        
+        if (query == null || query.trim().isEmpty()) {
+            return all;
+        }
+        
+        String searchTerm = query.trim().toLowerCase();
+        ArrayList<Expense> filtered = new ArrayList<>();
+        
+        for (Expense exp : all) {
+            String name = exp.getName().toLowerCase();
+            String desc = exp.getDescription().toLowerCase();
+            
+            if (name.contains(searchTerm) || desc.contains(searchTerm)) {
+                filtered.add(exp);
+            }
+        }
+        
+        return filtered;
+    }
 }
