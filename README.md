@@ -1,7 +1,5 @@
 # OOP Final Project - Budget Tracking
 
-To run the project, the following `.jar` files must be added to your classpath:
-
 ## How to Run
 
 ### 1. Clone the repository
